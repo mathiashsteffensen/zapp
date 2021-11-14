@@ -1,6 +1,8 @@
 AllCops:
+  TargetRubyVersion: 3.0.0
   EnabledByDefault: true
   NewCops: enable
+
 Style/DocumentationMethod:
   Enabled: false
 Style/MissingElse:
@@ -19,12 +21,16 @@ Style/Send:
   Enabled: false
 Style/ClassMethodsDefinitions:
   Enabled: false
+
 Lint/ConstantResolution:
   Enabled: false
+
 Bundler/GemComment:
   Enabled: false
+
 Layout/MultilineAssignmentLayout:
   Enabled: false
+
 Metrics/BlockLength:
   Exclude:
     - spec/**/*_spec.rb
