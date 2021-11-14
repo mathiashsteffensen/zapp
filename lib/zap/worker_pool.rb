@@ -5,7 +5,7 @@ module Zap
   class WorkerPool
     attr_reader :pipe, :workers, :parallelism
 
-    def initialize(parallelism:)
+    def initialize(app:, parallelism:)
       @parallelism = parallelism
 
       @pipe = Ractor.new do
@@ -16,10 +16,12 @@ module Zap
 
       @workers = []
       parallelism.times do |i|
-        @workers << Ractor.new(pipe, name: "zap-http-#{i}") do |p|
+        name = "zap-http-#{i + 1}"
+        @workers << Ractor.new(pipe, app, ENV.to_hash, name: name) do |p, app, env|
           while (request, shutdown = p.take)
             break if shutdown
-            request.process
+
+            request.process(app: app, env: env)
           end
         end
       end
@@ -33,6 +35,8 @@ module Zap
     def drain
       parallelism.times { process(request: nil, shutdown: true) }
       workers.map(&:take)
+    rescue Ractor::RemoteError
+      # Ignored
     end
   end
 end
