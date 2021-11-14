@@ -5,3 +5,10 @@ and the new parallelism implementation introduced with CRuby 3.0.0, [Ractors](ht
 
 This is an experimental project as Ractors are very very new and the Ractor API may change at any moment. While I would not recommend using this server in production for that reason,
 if you do decide to do so, pin your ruby version to one of the versions this project is tested against.
+
+## TODO
+
+* Use Rack::Lint and ensure the server conforms to [the Rack specification](https://github.com/rack/rack/blob/master/SPEC.rdoc)
+* Add way more tests to all parts of the library
+* Add CLI handler for Rack applications (config.ru)
+* Add some benchmarks against Puma, quite interesting to see how Ractors perform
