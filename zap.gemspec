@@ -27,6 +27,9 @@ Gem::Specification.new do |spec|
   spec.bindir        = "bin"
   spec.require_paths = ["lib"]
 
+  # This is of course a web server for Rack applications
+  spec.add_dependency("rack", "~> 2.2.3")
+
   # Use Puma's C-based HttpParser, it's fast as hell
   spec.add_dependency("puma", "~> 5.5.2")
 

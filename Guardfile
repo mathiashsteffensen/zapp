@@ -17,7 +17,7 @@ guard :rspec, cmd: "bundle exec rspec --format progress" do
   dsl.watch_spec_files_for(ruby.lib_files)
 end
 
-guard :rubocop, cli: ["-A"] do
+guard :rubocop do
   watch(/.+\.rb$/)
   watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
 end

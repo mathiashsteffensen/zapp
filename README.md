@@ -8,7 +8,6 @@ if you do decide to do so, pin your ruby version to one of the versions this pro
 
 ## TODO
 
-* Use Rack::Lint and ensure the server conforms to [the Rack specification](https://github.com/rack/rack/blob/master/SPEC.rdoc)
 * Add way more tests to all parts of the library
 * Add CLI handler for Rack applications (config.ru)
 * Add some benchmarks against Puma, quite interesting to see how Ractors perform

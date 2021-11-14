@@ -11,7 +11,7 @@ end
 
 require "zap"
 
-Dir.glob("./support/**/*.rb") { |f| require_relative(f) }
+Dir.glob("spec/support/*.rb") { |f| require_relative(f.gsub("spec", ".")) }
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

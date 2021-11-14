@@ -3,6 +3,7 @@
 # External dependencies are loaded here
 require("socket")
 require("puma")
+require("rack")
 
 module Zap
   class ZapError < StandardError; end

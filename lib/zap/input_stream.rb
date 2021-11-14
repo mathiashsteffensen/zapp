@@ -24,10 +24,18 @@ module Zap
       end
     end
 
+    def each
+      [read].each
+    end
+
     def gets
       return unless @next_index_to_read < @string.length
 
       read
+    end
+
+    def rewind
+      @next_index_to_read = 0
     end
 
     private

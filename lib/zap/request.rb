@@ -23,6 +23,7 @@ module Zap
     rescue Puma::HttpParserError, EOFError => e
       # Ignore EOFError's and HttpParserError's
       # Any client can essentially send any data packet so no reason to do anything about invalid packets
+      @data = {}
 
       # Might still be interesting to know about when debugging
       Zap::Logger.debug("Failed to parse HTTP request #{e}")
@@ -31,13 +32,7 @@ module Zap
     def process(app:, env:)
       return write_response(data: "Invalid request", code: 400) if data == {}
 
-      data["QUERY_STRING"] ||= ""
-      data["SERVER_NAME"] = data["HTTP_HOST"] || ""
-
-      env.update(data)
-
-      env["SCRIPT_NAME"] ||= ""
-      env["PATH_INFO"] ||= env["REQUEST_PATH"]
+      prepare_env(data: data, env: env)
 
       status, _headers, response_body_stream = app.call(env)
 
@@ -51,9 +46,38 @@ module Zap
       socket.close
     end
 
+    private
+
+    def prepare_env(data:, env:)
+      data["QUERY_STRING"] ||= ""
+      data["SERVER_NAME"] = data["HTTP_HOST"] || ""
+      data["PATH_INFO"] ||= data["REQUEST_PATH"]
+      data["SCRIPT_NAME"] ||= ""
+
+      env.update(data)
+
+      env.update(
+        Rack::RACK_VERSION => [2, 2, 3],
+        Rack::RACK_INPUT => Zap::InputStream.new(string: request_body),
+        Rack::RACK_ERRORS => $stderr,
+        Rack::RACK_MULTITHREAD => false,
+        Rack::RACK_MULTIPROCESS => true,
+        Rack::RACK_RUNONCE => false,
+        Rack::RACK_URL_SCHEME => %w[yes on 1].include?(env["HTTPS"]) ? "https" : "http"
+      )
+    end
+
     # TODO: Add headers argument
     def write_response(data:, code:)
-      socket.write(%(HTTP/1.1 #{code} Content-Length: #{data.size} #{data} ))
+      # rubocop:disable Layout/:RedundantLineBreak
+      socket.write(
+        %(HTTP/1.1 #{code}
+Content-Length: #{data.size}
+
+#{data}
+        )
+      )
+      # rubocop:enable Layout/:RedundantLineBreak
     end
   end
 end
