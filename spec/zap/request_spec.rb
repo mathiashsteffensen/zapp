@@ -8,12 +8,17 @@ RSpec.describe(Zap::Request) do
   let(:socket) { MockSocket.new(request_content: "GET /admin/users?search=%27%%27 HTTP/1.1\r\n\r\n") }
 
   describe "#process" do
-    subject(:process) { request.process(app: app, env: env) }
+    subject(:process) { request.process(app: app, env: env, logger: logger) }
 
     # Ensure we conform to the Rack specification
     let(:mock_app) { MockApp.new }
     let(:app) { Rack::Lint.new(mock_app) }
     let(:env) { {} }
+    let(:logger) do
+      logger = Zap::Logger.new
+      logger.level = Zap::Logger::LEVELS[:WARN]
+      logger
+    end
 
     before do
       process

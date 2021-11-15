@@ -23,7 +23,10 @@ module Zap
       Zap::Logger.info("Ready to accept requests")
 
       loop do
-        request = Zap::Request.new(socket: tcp_connection.accept, parser: parser)
+        socket = tcp_connection.accept
+        next if socket.eof?
+
+        request = Zap::Request.new(socket: socket, parser: parser)
 
         worker_pool.process(request: request)
       end

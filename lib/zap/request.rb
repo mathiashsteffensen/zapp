@@ -4,9 +4,10 @@ module Zap
   # Represents an HTTP Request to be processed by a worker
   # Most of the logic happens here, the worker simply calls Request#process
   class Request
-    attr_reader :socket, :data, :request_body, :start
+    attr_reader :socket, :data, :request_body
 
     def initialize(socket:, parser:)
+      @start = Time.now.to_f * 1000
       @socket = socket
       @data = {}
 
@@ -29,7 +30,7 @@ module Zap
       Zap::Logger.debug("Failed to parse HTTP request #{e}")
     end
 
-    def process(app:, env:)
+    def process(app:, env:, logger:)
       return write_response(data: "Invalid request", code: 400) if data == {}
 
       prepare_env(data: data, env: env)
@@ -44,6 +45,7 @@ module Zap
       write_response(data: response_body, code: status)
     ensure
       socket.close
+      logger.info("Processed request in #{((Time.now.to_f * 1000) - @start).truncate(2)}ms")
     end
 
     private

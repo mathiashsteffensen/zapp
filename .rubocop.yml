@@ -2,6 +2,8 @@ AllCops:
   TargetRubyVersion: 3.0.0
   EnabledByDefault: true
   NewCops: enable
+  Exclude:
+    - example/**/*
 
 Style/DocumentationMethod:
   Enabled: false

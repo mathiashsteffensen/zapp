@@ -5,11 +5,14 @@ require "simplecov"
 SimpleCov.start do
   add_filter "/spec/"
   add_filter "/vendor/"
+  add_filter "/example/"
 
   add_group "Zap", "lib/zap"
 end
 
 require "zap"
+
+Zap::Logger.level = Zap::Logger::LEVELS[:WARN]
 
 Dir.glob("spec/support/*.rb") { |f| require_relative(f.gsub("spec", ".")) }
 

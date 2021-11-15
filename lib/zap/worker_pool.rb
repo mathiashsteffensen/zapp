@@ -16,13 +16,11 @@ module Zap
 
       @workers = []
       parallelism.times do |i|
-        @workers << Ractor.new(pipe, app, ENV.to_hash, name: "zap-http-#{i + 1}") do |p, app, env|
-          while (request, shutdown = p.take)
-            break if shutdown
-
-            request.process(app: app, env: env)
-          end
-        end
+        @workers << Worker.new(
+          pipe_: pipe,
+          app_: app,
+          index: i
+        )
       end
     end
 
@@ -36,7 +34,7 @@ module Zap
     # Finishes processing of all requests and shuts down workers
     def drain
       parallelism.times { process(request: nil, shutdown: true) }
-      workers.map(&:take)
+      workers.map(&:terminate)
     rescue Ractor::RemoteError
       # Ignored
     end
