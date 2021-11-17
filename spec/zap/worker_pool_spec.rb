@@ -11,7 +11,7 @@ RSpec.describe(Zap::WorkerPool) do
 
   let(:app) { MockApp.new }
 
-  describe "#process" do
+  describe("#process") do
     subject(:process) do
       worker_pool.process(request: request)
       worker_pool.drain
@@ -22,7 +22,7 @@ RSpec.describe(Zap::WorkerPool) do
     end
     let(:request) { Zap::Request.new(parser: Puma::HttpParser.new, socket: socket) }
 
-    it "doesn't raise an error" do
+    it("doesn't raise an error") do
       expect { process }
         .not_to(raise_error)
     end

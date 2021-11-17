@@ -4,7 +4,7 @@ module Zap
   # Represents an HTTP Request to be processed by a worker
   # Most of the logic happens here, the worker simply calls Request#process
   class Request
-    attr_reader :socket, :data, :request_body
+    attr_reader(:socket, :data, :request_body)
 
     def initialize(socket:, parser:)
       @start = Time.now.to_f * 1000

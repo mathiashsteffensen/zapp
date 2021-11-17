@@ -2,8 +2,8 @@
 
 %w[lib spec].select { |d| Dir.exist?(d) ? d : UI.warning("Directory #{d} does not exist") }
 
-guard :rspec, cmd: "bundle exec rspec --format progress" do
-  require "guard/rspec/dsl"
+guard(:rspec, cmd: "bundle exec rspec --format progress") do
+  require("guard/rspec/dsl")
   dsl = Guard::RSpec::Dsl.new(self)
 
   # RSpec files
@@ -17,7 +17,7 @@ guard :rspec, cmd: "bundle exec rspec --format progress" do
   dsl.watch_spec_files_for(ruby.lib_files)
 end
 
-guard :rubocop do
+guard(:rubocop) do
   watch(/.+\.rb$/)
   watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
 end

@@ -3,14 +3,13 @@
 module Zap
   # The Zap HTTP Server, listens on a TCP connection and processes incoming requests
   class Server
-    attr_reader :tcp_connection, :worker_pool
+    attr_reader(:tcp_connection, :worker_pool, :host, :port)
 
     def initialize(app:, port:, host:)
-      Zap::Logger.info("Opening TCP server at #{host}:#{port}")
+      @host = host
+      @port = port
 
       @tcp_connection = TCPServer.new(host, port)
-
-      Zap::Logger.info("Creating Zap::WorkerPool with 3 parallel workers")
       @worker_pool = Zap::WorkerPool.new(app: app, parallelism: 3)
     end
 
@@ -19,8 +18,7 @@ module Zap
     end
 
     def run
-      Zap::Logger.info("Zap v#{Zap::VERSION} web server running in development")
-      Zap::Logger.info("Ready to accept requests")
+      log_start
 
       loop do
         socket = tcp_connection.accept
@@ -31,12 +29,25 @@ module Zap
         worker_pool.process(request: request)
       end
     rescue SignalException, IRB::Abort => e
-      Zap::Logger.info("Received signal #{e}")
+      shutdown(e)
+    end
+
+    def shutdown(err = nil)
+      Zap::Logger.info("Received signal #{err}") unless err.nil?
       Zap::Logger.info("Gracefully shutting down workers, allowing request processing to finish")
 
       worker_pool.drain
 
       Zap::Logger.info("Done. See you next time!")
+    end
+
+    private
+
+    def log_start
+      Zap::Logger.info("Zap v#{Zap::VERSION} web server running in development")
+      Zap::Logger.info("Ready to accept requests")
+      Zap::Logger.info("TCP server listening on #{host}:#{port}")
+      Zap::Logger.info("Parallel workers: 3")
     end
 
     def parser

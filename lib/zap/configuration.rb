@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "etc"
-require "singleton"
-require "ostruct"
+require("etc")
+require("singleton")
+require("ostruct")
 
 module Zap
   # Class holding the configuration values used by Zap
   class Configuration
-    attr_accessor :parallelism, :logger_class, :log_requests
+    attr_accessor(:parallelism, :logger_class, :log_requests)
 
     DEFAULT_OPTIONS = {
       # Default to number of CPUs available
@@ -24,10 +24,6 @@ module Zap
       end
       @parallelism = DEFAULT_OPTIONS[:parallelism]
       @logger_class = DEFAULT_OPTIONS[:logger_class]
-    end
-
-    def configure
-      yield(self)
     end
   end
 end

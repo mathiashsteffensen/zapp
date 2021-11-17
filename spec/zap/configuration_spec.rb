@@ -12,7 +12,7 @@ RSpec.describe(Zap::Configuration) do
     end
   end
 
-  it "sets the value on the Singleton class" do
+  it("sets the value on the Singleton class") do
     expect(config.parallelism).to(eq(5))
     expect(config.log_requests).to(eq(false))
   end

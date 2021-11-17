@@ -9,12 +9,14 @@ require("rack")
 module Zap
   class ZapError < StandardError; end
 
-  def self.config
-    @config ||= Zap::Configuration.new
-  end
+  class << self
+    def config
+      @config ||= Zap::Configuration.new
+    end
 
-  def self.configure(&block)
-    config.configure(&block)
+    def configure
+      yield(config)
+    end
   end
 end
 
@@ -22,6 +24,7 @@ require("zap/version")
 require("zap/logger")
 require("zap/configuration")
 require("zap/input_stream")
+require("zap/http_context/context")
 require("zap/worker")
 require("zap/worker_pool")
 require("zap/request")

@@ -3,7 +3,7 @@
 module Zap
   # Manages and dispatches work to a pool of Ractor's
   class WorkerPool
-    attr_reader :pipe, :workers, :parallelism
+    attr_reader(:pipe, :workers, :parallelism)
 
     def initialize(app:, parallelism:)
       @parallelism = parallelism

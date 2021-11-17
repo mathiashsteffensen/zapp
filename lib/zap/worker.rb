@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Zap
+  # One worker processing requests in parallel
   class Worker < Ractor
     class << self
       def new(pipe_:, app_:, index:)
@@ -16,7 +17,7 @@ module Zap
         # A Parser for the worker to use
         parser_ = Puma::HttpParser.new
 
-        super(pipe_, app_, env_, logger_, parser_, name: name) do |pipe, app, env, logger, parser|
+        super(pipe_, app_, env_, logger_, parser_, name: name) do |pipe, app, env, logger, _parser|
           logger.level = 0
           while (request, shutdown = pipe.take)
             break if shutdown

@@ -7,7 +7,7 @@ RSpec.describe(Zap::Request) do
 
   let(:socket) { MockSocket.new(request_content: "GET /admin/users?search=%27%%27 HTTP/1.1\r\n\r\n") }
 
-  describe "#process" do
+  describe("#process") do
     subject(:process) { request.process(app: app, env: env, logger: logger) }
 
     # Ensure we conform to the Rack specification
@@ -24,14 +24,14 @@ RSpec.describe(Zap::Request) do
       process
     end
 
-    context "when it's a valid HTTP request" do
+    context("when it's a valid HTTP request") do
       let(:socket) { MockSocket.new(request_content: "GET /admin/users?search=%27%%27 HTTP/1.1\r\n\r\n") }
 
-      it "reads from the socket" do
+      it("reads from the socket") do
         expect(socket.was_read).to(eq(true))
       end
 
-      it "calls the app" do
+      it("calls the app") do
         expect(mock_app.calls.length).to(eq(1))
         expect(mock_app.calls.first).to(
           match(
@@ -51,24 +51,24 @@ RSpec.describe(Zap::Request) do
         )
       end
 
-      it "closes the socket when it's done" do
+      it("closes the socket when it's done") do
         expect(socket.was_closed).to(eq(true))
       end
     end
 
-    context "when it's an invalid HTTP request" do
+    context("when it's an invalid HTTP request") do
       let(:socket) { MockSocket.new(request_content: "awdawæø' wdawa") }
       let(:app) { MockApp.new }
 
-      it "reads from the socket" do
+      it("reads from the socket") do
         expect(socket.was_read).to(eq(true))
       end
 
-      it "doesn't call the app" do
+      it("doesn't call the app") do
         expect(app.calls).to(be_nil)
       end
 
-      it "closes the socket when it's done" do
+      it("closes the socket when it's done") do
         expect(socket.was_closed).to(eq(true))
       end
     end

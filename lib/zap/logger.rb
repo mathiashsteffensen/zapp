@@ -7,7 +7,7 @@ module Zap
     # This allows logging without creating new instances,
     # while allowing Ractors to create their own instances for thread safety
     module Base
-      attr_writer :level, :prefix
+      attr_writer(:level, :prefix)
 
       LEVELS = { DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3 }.freeze
 
@@ -48,7 +48,7 @@ module Zap
         puts("--- #{@prefix} [#{current_level}] #{msg}") if level <= LEVELS[current_level.to_sym]
       end
     end
-    include Zap::Logger::Base
+    include(Zap::Logger::Base)
 
     def initialize
       @prefix = "Zap"
@@ -56,7 +56,7 @@ module Zap
     end
 
     class << self
-      include Zap::Logger::Base
+      include(Zap::Logger::Base)
       @prefix = "Zap"
     end
   end

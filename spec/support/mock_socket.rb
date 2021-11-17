@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class MockSocket
-  attr_accessor :was_read, :was_closed, :response
+  attr_reader(:was_read, :was_closed, :response)
 
-  def initialize(request_content:)
+  def initialize(request_content: "")
     @request_content = request_content
   end
 

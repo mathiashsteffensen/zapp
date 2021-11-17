@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require "simplecov"
+require("simplecov")
 
 SimpleCov.start do
-  add_filter "/spec/"
-  add_filter "/vendor/"
-  add_filter "/example/"
+  add_filter("/spec/")
+  add_filter("/vendor/")
+  add_filter("/example/")
 
-  add_group "Zap", "lib/zap"
+  add_group("Zap", "lib/zap")
 end
 
-require "zap"
+require("zap")
 
 Zap::Logger.level = Zap::Logger::LEVELS[:WARN]
 
