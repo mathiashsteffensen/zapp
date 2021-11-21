@@ -1,0 +1,33 @@
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@0.1.2
+
+jobs:
+  test_three_zero_zero:
+    docker:
+      - image: circleci/ruby:3.0.0
+    executor: ruby/default
+    steps:
+      - checkout
+      - ruby/bundle-install
+      - run:
+          name: RSpec
+          command: bundle exec rspec
+  test_three_one_zero:
+    docker:
+      - image: circleci/ruby:3.1.0
+    executor: ruby/default
+    steps:
+      - checkout
+      - ruby/bundle-install
+      - run:
+          name: RSpec
+          command: bundle exec rspec        
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  sample:
+    jobs:
+      - test_three_zero_zero
