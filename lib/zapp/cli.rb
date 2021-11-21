@@ -27,6 +27,11 @@ module Zapp
           parse_config_file(location: file)
         end
 
+        opts.on("-v", "--version", "Prints the version of Zapp currently running") do
+          puts("Zapp v#{Zapp::VERSION}")
+          exit
+        end
+
         opts.on("-h", "--help", "Prints this help") do
           puts(opts)
           exit
