@@ -1,5 +1,7 @@
 # Zapp
 
+![CircleCI](https://circleci.com/gh/mathiashsteffensen/zapp/tree/master.svg?style=shield)
+
 Zapp is an experimental web server for Rack-based Ruby applications. It is based on the lightning fast [Puma](https://puma.io/) HTTP parser implemented in C,
 and the new parallelism implementation introduced with CRuby 3.0.0, [Ractors](https://github.com/ruby/ruby/blob/master/doc/ractor.md)
 
