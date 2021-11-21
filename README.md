@@ -4,7 +4,7 @@ Zapp is an experimental web server for Rack-based Ruby applications. It is based
 and the new parallelism implementation introduced with CRuby 3.0.0, [Ractors](https://github.com/ruby/ruby/blob/master/doc/ractor.md)
 
 This is an experimental project as Ractors are very very new and the Ractor API may change at any moment. While I would not recommend using this server in production for that reason,
-if you do decide to do so, pin your ruby version to one of the versions this project is tested against.
+if you do decide to do so, pin your ruby version to one of the versions this project is tested against (Currently only version 3.0.0).
 
 Why is it named Zapp with 2 p's you may ask? Because Zap with 1 p was taken.
 
