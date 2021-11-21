@@ -24,8 +24,8 @@ module Zap
       end
     end
 
-    def each
-      [read].each
+    def each(&block)
+      [read].each(&block)
     end
 
     def gets

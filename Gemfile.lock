@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     zap (0.1.0)
+      concurrent-ruby (~> 1.1.9)
       puma (~> 5.5.2)
       rack (~> 2.2.3)
       rake (~> 13.0)
@@ -12,6 +13,7 @@ GEM
   specs:
     ast (2.4.2)
     coderay (1.1.3)
+    concurrent-ruby (1.1.9)
     diff-lcs (1.4.4)
     docile (1.4.0)
     ffi (1.15.4)
@@ -105,4 +107,4 @@ DEPENDENCIES
   zap!
 
 BUNDLED WITH
-   2.2.3
+   2.3.0.dev

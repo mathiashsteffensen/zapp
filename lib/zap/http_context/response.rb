@@ -9,16 +9,18 @@ module Zap
       end
 
       # TODO: Add headers argument
-      def write(data:, status:)
-        # rubocop:disable Layout/:RedundantLineBreak
-        @socket.write(
-          %(HTTP/1.1 #{status}
-Content-Length: #{data.size}
+      def write(data:, status:, headers:)
+        response = "HTTP/1.1 #{status}\n"
 
-#{data}
-          )
-        )
-        # rubocop:enable Layout/:RedundantLineBreak
+        response += "Content-Length: #{data.size}\n" unless headers["Content-Length"]
+
+        headers.each do |k, v|
+          response += "#{k}: #{v}\n"
+        end
+
+        response += "\n#{data}\n"
+
+        @socket.write(response)
       end
     end
   end

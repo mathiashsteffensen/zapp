@@ -2,6 +2,7 @@
 
 # External dependencies are loaded here
 require("socket")
+require("concurrent")
 require("puma")
 require("rack")
 
@@ -10,7 +11,9 @@ module Zap
   class ZapError < StandardError; end
 
   class << self
-    def config
+    def config(reset: false)
+      @config = Zap::Configuration.new if reset
+
       @config ||= Zap::Configuration.new
     end
 
@@ -27,5 +30,5 @@ require("zap/input_stream")
 require("zap/http_context/context")
 require("zap/worker")
 require("zap/worker_pool")
-require("zap/request")
 require("zap/server")
+require("zap/cli")

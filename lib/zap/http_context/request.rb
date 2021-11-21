@@ -17,6 +17,7 @@ module Zap
       def parse!(parser: Puma::HttpParser.new)
         parser.execute(data, raw, 0)
         @body = Zap::InputStream.new(string: parser.body)
+        parser.reset
       end
 
       def parsed?

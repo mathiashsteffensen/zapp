@@ -7,20 +7,20 @@ class DummyRequest
 end
 
 RSpec.describe(Zap::WorkerPool) do
-  subject(:worker_pool) { Zap::WorkerPool.new(app: app, parallelism: 1) }
+  subject(:worker_pool) { Zap::WorkerPool.new(app: app) }
 
   let(:app) { MockApp.new }
 
   describe("#process") do
     subject(:process) do
-      worker_pool.process(request: request)
+      worker_pool.process(context: context)
       worker_pool.drain
     end
 
+    let(:context) { Zap::HTTPContext::Context.new(socket: socket) }
     let(:socket) do
       MockSocket.new(request_content: "GET /admin/users?search=%27%%27 HTTP/1.1\r\n\r\n")
     end
-    let(:request) { Zap::Request.new(parser: Puma::HttpParser.new, socket: socket) }
 
     it("doesn't raise an error") do
       expect { process }

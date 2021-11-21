@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 require("spec_helper")
 
@@ -39,6 +39,14 @@ RSpec.describe(Zap::InputStream) do
         it("returns the rest of the string") do
           input.read(5)
           expect(read).to(eq("is http data"))
+        end
+
+        context("when rewinded") do
+          it("returns the whole input") do
+            input.read(5)
+            input.rewind
+            expect(read).to(eq(raw_string))
+          end
         end
       end
 
@@ -82,6 +90,27 @@ RSpec.describe(Zap::InputStream) do
           input.read
           expect(read).to(be_nil)
         end
+      end
+    end
+
+    context("with a buffer") do
+      let(:buffer) { "" }
+
+      context("when nothing has been read from the input") do
+        it("adds the whole input to the buffer") do
+          read
+          expect(buffer).to(eq(raw_string))
+        end
+      end
+    end
+  end
+
+  describe("#each") do
+    subject(:each) { input.each }
+
+    it("calls read and wraps it in an array") do
+      each do |s|
+        expect(s).to(eq(raw_string))
       end
     end
   end

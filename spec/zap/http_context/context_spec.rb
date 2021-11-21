@@ -33,7 +33,7 @@ RSpec.describe(Zap::HTTPContext::Context) do
     subject(:response) { context.res }
 
     describe("#write") do
-      subject(:write) { response.write(data: data, status: status) }
+      subject(:write) { response.write(data: data, status: status, headers: {}) }
 
       let(:data) { "This is content" }
       let(:status) { 200 }
@@ -49,10 +49,22 @@ RSpec.describe(Zap::HTTPContext::Context) do
 Content-Length: #{data.size}
 
 This is content
-          )
+)
           )
         )
       end
+    end
+  end
+
+  describe("#close") do
+    subject(:close) { context.close }
+
+    before do
+      close
+    end
+
+    it("closes the socket") do
+      expect(socket.was_closed).to(eq(true))
     end
   end
 end

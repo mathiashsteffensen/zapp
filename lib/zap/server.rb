@@ -3,30 +3,31 @@
 module Zap
   # The Zap HTTP Server, listens on a TCP connection and processes incoming requests
   class Server
-    attr_reader(:tcp_connection, :worker_pool, :host, :port)
+    attr_reader(:tcp_connection, :worker_pool)
 
-    def initialize(app:, port:, host:)
-      @host = host
-      @port = port
-
-      @tcp_connection = TCPServer.new(host, port)
-      @worker_pool = Zap::WorkerPool.new(app: app, parallelism: 3)
-    end
-
-    def socket
-      tcp_connection.accept
+    def initialize
+      @tcp_connection = TCPServer.new(Zap.config.host, Zap.config.port)
+      @worker_pool = Zap::WorkerPool.new(app: Zap.config.app)
     end
 
     def run
+      parser = Puma::HttpParser.new
+
       log_start
 
       loop do
         socket = tcp_connection.accept
         next if socket.eof?
 
-        request = Zap::Request.new(socket: socket, parser: parser)
+        context = Zap::HTTPContext::Context.new(socket: socket)
 
-        worker_pool.process(request: request)
+        context.req.parse!(parser: parser)
+
+        worker_pool.process(context: context)
+
+      rescue Puma::HttpParserError => e
+        context.res.write(data: "Invalid HTTP request", status: 500, headers: {})
+        Zap::Logger.warn("Puma parser error: #{e}")
       end
     rescue SignalException, IRB::Abort => e
       shutdown(e)
@@ -44,14 +45,11 @@ module Zap
     private
 
     def log_start
-      Zap::Logger.info("Zap v#{Zap::VERSION} web server running in development")
+      Zap::Logger.info("Zap version: #{Zap::VERSION}")
+      Zap::Logger.info("Environment: #{Zap.config.mode}")
+      Zap::Logger.info("Serving: #{Zap.config.env[Rack::RACK_URL_SCHEME]}://#{Zap.config.host}:#{Zap.config.port}")
+      Zap::Logger.info("Parallel workers: #{Zap.config.parallelism}")
       Zap::Logger.info("Ready to accept requests")
-      Zap::Logger.info("TCP server listening on #{host}:#{port}")
-      Zap::Logger.info("Parallel workers: 3")
-    end
-
-    def parser
-      @parser ||= Puma::HttpParser.new
     end
   end
 end

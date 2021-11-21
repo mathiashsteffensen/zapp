@@ -8,11 +8,10 @@ SimpleCov.start do
   add_filter("/example/")
 
   add_group("Zap", "lib/zap")
+  add_group("HTTPContext", "lib/zap/http_context")
 end
 
 require("zap")
-
-Zap::Logger.level = Zap::Logger::LEVELS[:WARN]
 
 Dir.glob("spec/support/*.rb") { |f| require_relative(f.gsub("spec", ".")) }
 
@@ -25,5 +24,16 @@ RSpec.configure do |config|
 
   config.expect_with(:rspec) do |c|
     c.syntax = :expect
+  end
+
+  config.before do
+    Zap.config(reset: true)
+
+    Zap::Logger.level = Zap::Logger::LEVELS[:WARN]
+    Zap.configure do |c|
+      c.parallelism = 1
+      c.log_requests = false
+      c.log_uncaught_errors = true
+    end
   end
 end

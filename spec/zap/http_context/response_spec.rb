@@ -8,7 +8,7 @@ RSpec.describe(Zap::HTTPContext::Response) do
   let(:socket) { MockSocket.new }
 
   describe("#write") do
-    subject(:write) { response.write(data: data, status: status) }
+    subject(:write) { response.write(data: data, status: status, headers: headers) }
 
     let(:data) { "This is content" }
     let(:status) { 200 }
@@ -17,16 +17,38 @@ RSpec.describe(Zap::HTTPContext::Response) do
       write
     end
 
-    it("formats an HTTP response") do
-      expect(socket.response).to(
-        eq(
-          %(HTTP/1.1 #{status}
+    context("when Content-Length header is not specified") do
+      let(:headers) { {} }
+
+      it("formats an HTTP response with the header added") do
+        expect(socket.response).to(
+          eq(
+            %(HTTP/1.1 #{status}
 Content-Length: #{data.size}
 
 This is content
+)
           )
         )
-      )
+      end
+    end
+
+    context("when Content-Length header is specified") do
+      # rubocop:disable Style/StringHashKeys
+      let(:headers) { { "Content-Length" => 755 } }
+      # rubocop:enable Style/StringHashKeys
+
+      it("formats an HTTP response with the header added") do
+        expect(socket.response).to(
+          eq(
+            %(HTTP/1.1 #{status}
+Content-Length: 755
+
+This is content
+)
+          )
+        )
+      end
     end
   end
 end

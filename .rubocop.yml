@@ -3,7 +3,7 @@ AllCops:
   EnabledByDefault: true
   NewCops: enable
   Exclude:
-    - example/**/*
+    - examples/**/*
 
 Style/DocumentationMethod:
   Enabled: false
@@ -34,9 +34,13 @@ Bundler/GemComment:
 
 Layout/MultilineAssignmentLayout:
   Enabled: false
+Layout/RedundantLineBreak:
+  Enabled: false
 
 Metrics/BlockLength:
   Exclude:
     - spec/**/*_spec.rb
 Metrics/MethodLength:
   Max: 25
+Metrics/AbcSize:
+  Max: 30
