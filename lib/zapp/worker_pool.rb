@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Zap
+module Zapp
   # Manages and dispatches work to a pool of Zap::Worker's
   class WorkerPool
     attr_reader(:pipe, :workers, :parallelism)
@@ -13,7 +13,7 @@ module Zap
       end
 
       @workers = []
-      Zap.config.parallelism.times do |i|
+      Zapp.config.parallelism.times do |i|
         @workers << Worker.new(
           pipe_: pipe,
           app_: app,
@@ -31,7 +31,7 @@ module Zap
 
     # Finishes processing of all requests and shuts down workers
     def drain
-      Zap.config.parallelism.times { process(context: nil, shutdown: true) }
+      Zapp.config.parallelism.times { process(context: nil, shutdown: true) }
       workers.map(&:terminate)
     rescue Ractor::RemoteError
       # Ignored

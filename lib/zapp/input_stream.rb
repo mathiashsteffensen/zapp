@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Zap
+module Zapp
   # Represents an input stream with the HTTP data passed to rack.input
   # Read the Input Stream part of the Rack Specification here https://github.com/rack/rack/blob/master/SPEC.rdoc#label-The+Input+Stream
   class InputStream

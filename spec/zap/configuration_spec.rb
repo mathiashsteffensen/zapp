@@ -2,12 +2,12 @@
 
 require("spec_helper")
 
-RSpec.describe(Zap::Configuration) do
-  subject(:config) { Zap.config }
+RSpec.describe(Zapp::Configuration) do
+  subject(:config) { Zapp.config }
 
   context("when used like a normal ruby config block") do
     before do
-      Zap.configure do |config|
+      Zapp.configure do |config|
         config.parallelism = 5
         config.log_requests = false
         config.logger_class = self
@@ -25,7 +25,7 @@ RSpec.describe(Zap::Configuration) do
 
   context("when used as a DSL") do
     before do
-      Zap.config.instance_eval do
+      Zapp.config.instance_eval do
         parallelism(5)
         log_requests(false)
         logger_class("Class")

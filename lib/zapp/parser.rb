@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Zap
+module Zapp
   # Parses HTTP Requests
   class Parser
     def initialize

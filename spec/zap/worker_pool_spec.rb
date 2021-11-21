@@ -6,8 +6,8 @@ class DummyRequest
   def process; end
 end
 
-RSpec.describe(Zap::WorkerPool) do
-  subject(:worker_pool) { Zap::WorkerPool.new(app: app) }
+RSpec.describe(Zapp::WorkerPool) do
+  subject(:worker_pool) { Zapp::WorkerPool.new(app: app) }
 
   let(:app) { MockApp.new }
 
@@ -17,7 +17,7 @@ RSpec.describe(Zap::WorkerPool) do
       worker_pool.drain
     end
 
-    let(:context) { Zap::HTTPContext::Context.new(socket: socket) }
+    let(:context) { Zapp::HTTPContext::Context.new(socket: socket) }
     let(:socket) do
       MockSocket.new(request_content: "GET /admin/users?search=%27%%27 HTTP/1.1\r\n\r\n")
     end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Zap
+module Zapp
   module HTTPContext
     # Represents an HTTP response being sent back to a client
     class Response

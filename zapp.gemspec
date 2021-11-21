@@ -1,23 +1,21 @@
 # frozen_string_literal: true
 
-require_relative("lib/zap/version")
+require_relative("lib/zapp/version")
 
 Gem::Specification.new do |spec|
-  spec.name          = "zap"
-  spec.version       = Zap::VERSION
+  spec.name          = "zapp"
+  spec.version       = Zapp::VERSION
   spec.authors       = ["Mathias H Steffensen"]
   spec.email         = ["mathiashsteffensen@protonmail.com"]
 
   spec.summary       = "A Web Server based on Ractors, for Rack-based Ruby applications"
-  spec.homepage      = "https://github.com/mathiashsteffensen/zap"
+  spec.homepage      = "https://github.com/mathiashsteffensen/zapp"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 3.0.0")
 
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
-
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/mathiashsteffensen/zap"
-  spec.metadata["changelog_uri"] = "https://github.com/mathiashsteffensen/zap/blob/master/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "https://github.com/mathiashsteffensen/zapp"
+  spec.metadata["changelog_uri"] = "https://github.com/mathiashsteffensen/zapp/blob/master/CHANGELOG.md"
 
   # Which files should be added to the gem when it is released.
   spec.files =

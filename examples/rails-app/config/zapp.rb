@@ -2,7 +2,7 @@
 
 class App
   def self.call(_env)
-    [200, {}, ["Hello from Zap"]]
+    [200, {}, ["Hello from Zapp"]]
   end
 end
 

@@ -2,7 +2,7 @@
 
 require("spec_helper")
 
-RSpec.describe(Zap::HTTPContext::Response) do
+RSpec.describe(Zapp::HTTPContext::Response) do
   subject(:response) { described_class.new(socket: socket) }
 
   let(:socket) { MockSocket.new }

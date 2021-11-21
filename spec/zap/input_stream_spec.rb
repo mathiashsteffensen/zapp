@@ -2,7 +2,7 @@
 
 require("spec_helper")
 
-RSpec.describe(Zap::InputStream) do
+RSpec.describe(Zapp::InputStream) do
   subject(:input) { described_class.new(string: raw_string) }
 
   let(:raw_string) { "this is http data" }

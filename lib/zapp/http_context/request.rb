@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Zap
+module Zapp
   module HTTPContext
     # Represents an HTTP Request to be processed by a worker
     class Request
@@ -16,12 +16,12 @@ module Zap
 
       def parse!(parser: Puma::HttpParser.new)
         parser.execute(data, raw, 0)
-        @body = Zap::InputStream.new(string: parser.body)
+        @body = Zapp::InputStream.new(string: parser.body)
         parser.reset
       end
 
       def parsed?
-        body.is_a?(Zap::InputStream) && !data.nil? && data != {}
+        body.is_a?(Zapp::InputStream) && !data.nil? && data != {}
       end
     end
   end

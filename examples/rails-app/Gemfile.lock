@@ -1,7 +1,7 @@
 PATH
   remote: ../..
   specs:
-    zap (0.1.0)
+    zapp (0.1.0)
       concurrent-ruby (~> 1.1.9)
       puma (~> 5.5.2)
       rack (~> 2.2.3)
@@ -244,7 +244,7 @@ DEPENDENCIES
   web-console (>= 4.1.0)
   webdrivers
   webpacker (~> 5.0)
-  zap!
+  zapp!
 
 RUBY VERSION
    ruby 3.0.0p0

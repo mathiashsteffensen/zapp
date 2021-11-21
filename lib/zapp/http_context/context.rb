@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require("zap/http_context/request")
-require("zap/http_context/response")
+require("zapp/http_context/request")
+require("zapp/http_context/response")
 
-module Zap
+module Zapp
   module HTTPContext
     # Context containing request and response
     class Context
@@ -11,8 +11,8 @@ module Zap
 
       def initialize(socket:)
         @socket = socket
-        @req = Zap::HTTPContext::Request.new(socket: socket)
-        @res = Zap::HTTPContext::Response.new(socket: socket)
+        @req = Zapp::HTTPContext::Request.new(socket: socket)
+        @res = Zapp::HTTPContext::Response.new(socket: socket)
       end
 
       def close

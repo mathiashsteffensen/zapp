@@ -4,7 +4,7 @@ require("etc")
 require("singleton")
 require("ostruct")
 
-module Zap
+module Zapp
   # Class holding the configuration values used by Zap
   class Configuration
     attr_writer(
@@ -32,7 +32,7 @@ module Zap
       threads_per_worker: 5,
 
       # Default logging behavior
-      logger_class: Zap::Logger,
+      logger_class: Zapp::Logger,
       log_requests: true,
       log_uncaught_errors: true,
 
@@ -64,7 +64,7 @@ module Zap
         require("rack/builder")
         Rack::Builder
       rescue LoadError => e
-        Zap::Logger.error("Failed to load Rack #{e}")
+        Zapp::Logger.error("Failed to load Rack #{e}")
       end
     end
 
@@ -72,7 +72,7 @@ module Zap
       @app = new unless new.nil?
 
       @app ||= begin
-        raise(Zap::ZapError, "Missing rackup file '#{rackup_file}'") unless File.exist?(rackup_file)
+        raise(Zapp::ZapError, "Missing rackup file '#{rackup_file}'") unless File.exist?(rackup_file)
 
         rack_app, = rack_builder.parse_file(rackup_file)
 

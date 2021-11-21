@@ -9,8 +9,8 @@ ruby("3.0.0")
 gem("rails", "~> 6.1.4", ">= 6.1.4.1")
 # Use sqlite3 as the database for Active Record
 gem("sqlite3", "~> 1.4")
-# Use Zap as the app server
-gem("zap", path: "../..")
+# Use Zapp as the app server
+gem("zapp", path: "../..")
 # Use SCSS for stylesheets
 gem("sass-rails", ">= 6")
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker

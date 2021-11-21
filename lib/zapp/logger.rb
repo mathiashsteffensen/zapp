@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Zap
+module Zapp
   # The default logger for zap
   class Logger
     # Base contains all the logging functionality and is included both as class and instance methods of Zap::Logger
@@ -28,10 +28,10 @@ module Zap
       end
 
       def level
-        @level ||= if ENV["ZAP_LOG_LEVEL"] != "" && !ENV["ZAP_LOG_LEVEL"].nil?
-                     if LEVELS[ENV["ZAP_LOG_LEVEL"]].nil?
+        @level ||= if ENV["ZAPP_LOG_LEVEL"] != "" && !ENV["ZAPP_LOG_LEVEL"].nil?
+                     if LEVELS[ENV["ZAPP_LOG_LEVEL"]].nil?
                        raise(
-                         Zap::ZapError,
+                         Zapp::ZappError,
                          "Invalid log level '#{ENV['ZAP_LOG_LEVEL']}', must be one of [#{LEVELS.keys.join(', ')}]"
                        )
                      else
@@ -48,7 +48,7 @@ module Zap
         puts("--- #{@prefix} [#{current_level}] #{msg}") if level <= LEVELS[current_level.to_sym]
       end
     end
-    include(Zap::Logger::Base)
+    include(Zapp::Logger::Base)
 
     def initialize
       @prefix = "Zap"
@@ -56,7 +56,7 @@ module Zap
     end
 
     class << self
-      include(Zap::Logger::Base)
+      include(Zapp::Logger::Base)
       @prefix = "Zap"
     end
   end

@@ -2,7 +2,7 @@
 
 require("spec_helper")
 
-RSpec.describe(Zap::HTTPContext::Context) do
+RSpec.describe(Zapp::HTTPContext::Context) do
   subject(:context) { described_class.new(socket: socket) }
 
   let(:socket) { MockSocket.new(request_content: "GET /admin/users?search=%27%%27 HTTP/1.1\r\n\r\n") }

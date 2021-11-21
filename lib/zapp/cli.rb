@@ -2,26 +2,26 @@
 
 require("optionparser")
 
-module Zap
+module Zapp
   # Provides the CLI utility for easily running Ruby 3.0.0+ applications with Zap
   class CLI
     def run
       parse_options
 
-      Zap::Server.new.run
+      Zapp::Server.new.run
     end
 
     private
 
     def parse_options
       begin
-        parse_config_file(location: "./config/zap.rb")
+        parse_config_file(location: "./config/zapp.rb")
       rescue StandardError
         # Ignored
       end
 
       OptionParser.new do |opts|
-        opts.banner = "Usage: bundle exec zap [options]"
+        opts.banner = "Usage: bundle exec zapp [options]"
 
         opts.on("-c", "--config-file=FILE", "Config file to use") do |file|
           parse_config_file(location: file)
@@ -39,7 +39,7 @@ module Zap
         File.absolute_path(location)
       )
 
-      Zap.config.instance_eval(config)
+      Zapp.config.instance_eval(config)
     end
   end
 end

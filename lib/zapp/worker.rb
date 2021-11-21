@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
-module Zap
+module Zapp
   # One worker processing requests in parallel
   class Worker < Ractor
     class << self
       def new(pipe_:, app_:, index:)
         # Logger with the name as prefix
-        logger_ = Zap.config.logger_class.new do |logger|
+        logger_ = Zapp.config.logger_class.new do |logger|
           logger.prefix = name(index)
         end
 
-        super(pipe_, app_, logger_, Zap.config.dup, name: name(index)) do |pipe, app, logger, config|
+        super(pipe_, app_, logger_, Zapp.config.dup, name: name(index)) do |pipe, app, logger, config|
           logger.level = 0
           while (context, shutdown = pipe.take)
             break if shutdown
 
             if config.log_requests
-              Zap::Worker.log_request_time(logger: logger) do
-                Zap::Worker.process(context: context, app: app, logger: logger, config: config)
+              Zapp::Worker.log_request_time(logger: logger) do
+                Zapp::Worker.process(context: context, app: app, logger: logger, config: config)
               end
             else
-              Zap::Worker.process(context: context, app: app, logger: logger, config: config)
+              Zapp::Worker.process(context: context, app: app, logger: logger, config: config)
             end
           end
         end
@@ -81,7 +81,7 @@ module Zap
     end
 
     def terminate
-      Zap::Logger.debug("Terminating worker #{name}")
+      Zapp::Logger.debug("Terminating worker #{name}")
       take
     end
   end

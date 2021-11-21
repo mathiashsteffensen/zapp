@@ -2,8 +2,8 @@
 
 require("spec_helper")
 
-RSpec.describe(Zap) do
+RSpec.describe(Zapp) do
   it("has a version number") do
-    expect(Zap::VERSION).not_to(be(nil))
+    expect(Zapp::VERSION).not_to(be(nil))
   end
 end

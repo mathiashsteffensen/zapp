@@ -2,6 +2,6 @@
 
 require("spec_helper")
 
-RSpec.describe(Zap::Worker) do
+RSpec.describe(Zapp::Worker) do
   pending("Add some specs to Zap::Worker")
 end

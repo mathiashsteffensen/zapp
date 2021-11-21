@@ -4,13 +4,13 @@ require("rack/handler")
 
 module Rack
   module Handler
-    # Rack handler for the Zap web server
-    class Zap
+    # Rack handler for the Zapp web server
+    class Zapp
       def self.run(app)
-        Zap::Server.new(app: app).run
+        Zapp::Server.new(app: app).run
       end
 
-      register(:zap, Rack::Handler::Zap)
+      register(:zapp, Rack::Handler::Zapp)
     end
   end
 end
