@@ -16,7 +16,8 @@ if you do decide to do so, pin your ruby version to one of the versions this pro
 ## TODO
 
 * Add way more tests to all parts of the library
-* Add CLI handler for Rack applications (config.ru)
+* Resolve Rails/Ractor compatibility issues
+* Add thread pool per worker
 * Add some benchmarks against Puma, quite interesting to see how Ractors perform
 * PID file support
 * Support for rack_options
