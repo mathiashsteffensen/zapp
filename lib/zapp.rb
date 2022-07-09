@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # External dependencies are loaded here
+require("irb")
 require("socket")
 require("concurrent")
 require("puma")
@@ -23,12 +24,15 @@ module Zapp
   end
 end
 
-require("zapp/version")
-require("zapp/logger")
-require("zapp/configuration")
-require("zapp/input_stream")
-require("zapp/http_context/context")
-require("zapp/worker")
-require("zapp/worker_pool")
-require("zapp/server")
-require("zapp/cli")
+require_relative("zapp/version")
+require_relative("zapp/logger")
+require_relative("zapp/configuration")
+require_relative("zapp/input_stream")
+require_relative("zapp/http_context/context")
+require_relative("zapp/pipe")
+require_relative("zapp/socket_pipe/sender")
+require_relative("zapp/socket_pipe/receiver")
+require_relative("zapp/worker")
+require_relative("zapp/worker_pool")
+require_relative("zapp/server")
+require_relative("zapp/cli")

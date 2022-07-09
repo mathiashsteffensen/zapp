@@ -11,6 +11,8 @@ Style/MissingElse:
   Enabled: false
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+Style/InlineComments:
+  Enabled: false
 Style/Copyright:
   Enabled: false
 Style/ConstantVisibility:

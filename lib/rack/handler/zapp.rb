@@ -6,11 +6,12 @@ module Rack
   module Handler
     # Rack handler for the Zapp web server
     class Zapp
-      def self.run(app)
-        Zapp::Server.new(app: app).run
-      end
-
       register(:zapp, Rack::Handler::Zapp)
+
+      def self.run(app)
+        Zapp.config.app = app
+        Zapp::Server.new.run
+      end
     end
   end
 end

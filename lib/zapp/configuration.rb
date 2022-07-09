@@ -44,7 +44,7 @@ module Zapp
         {
           Rack::RACK_VERSION => Rack::VERSION,
           Rack::RACK_ERRORS => $stderr,
-          Rack::RACK_MULTITHREAD => false,
+          Rack::RACK_MULTITHREAD => true,
           Rack::RACK_MULTIPROCESS => true,
           Rack::RACK_RUNONCE => false,
           Rack::RACK_URL_SCHEME => %w[yes on 1].include?(ENV["HTTPS"]) ? "https" : "http"

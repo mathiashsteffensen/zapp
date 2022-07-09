@@ -11,6 +11,9 @@ module Zapp
 
       LEVELS = { DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3 }.freeze
 
+      FROZEN_ENV = ENV.map { |k, v| [k.freeze, v.freeze] }
+                      .to_h.freeze
+
       def debug(msg)
         log("DEBUG", msg)
       end
@@ -28,36 +31,38 @@ module Zapp
       end
 
       def level
-        @level ||= if ENV["ZAPP_LOG_LEVEL"] != "" && !ENV["ZAPP_LOG_LEVEL"].nil?
-                     if LEVELS[ENV["ZAPP_LOG_LEVEL"]].nil?
-                       raise(
-                         Zapp::ZappError,
-                         "Invalid log level '#{ENV['ZAP_LOG_LEVEL']}', must be one of [#{LEVELS.keys.join(', ')}]"
-                       )
-                     else
-                       LEVELS[ENV["ZAP_LOG_LEVEL"]]
-                     end
-                   else
-                     LEVELS[:DEBUG]
-                   end
+        @level ||= begin
+          log_level = FROZEN_ENV["LOG_LEVEL"]
+
+          if log_level == "" || log_level.nil?
+            LEVELS[:DEBUG]
+          else
+            resolved_level = LEVELS[log_level.upcase.to_sym]
+
+            if resolved_level.nil?
+              raise(
+                Zapp::ZappError,
+                "Invalid log level '#{log_level.upcase}', must be one of [#{LEVELS.keys.join(', ')}]"
+              )
+            end
+
+            resolved_level
+          end
+        end
       end
 
-      private
-
-      def log(current_level, msg)
+      def log(current_level, msg, **_tags)
         puts("--- #{@prefix} [#{current_level}] #{msg}") if level <= LEVELS[current_level.to_sym]
       end
     end
     include(Zapp::Logger::Base)
 
     def initialize
-      @prefix = "Zap"
       yield(self) if block_given?
     end
 
     class << self
       include(Zapp::Logger::Base)
-      @prefix = "Zap"
     end
   end
 end

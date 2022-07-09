@@ -7,7 +7,7 @@ class MockSocket
     @request_content = request_content
   end
 
-  def readpartial(_len)
+  def recv(_len)
     @was_read = true
     @request_content
   end

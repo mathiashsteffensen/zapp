@@ -6,5 +6,5 @@ class App
   end
 end
 
-parallelism(2)
+parallelism(4)
 app(App)

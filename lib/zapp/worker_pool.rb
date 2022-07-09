@@ -3,35 +3,29 @@
 module Zapp
   # Manages and dispatches work to a pool of Zap::Worker's
   class WorkerPool
-    attr_reader(:pipe, :workers, :parallelism)
+    attr_reader(:context_pipe, :workers, :parallelism)
 
-    def initialize(app:)
-      @pipe = Ractor.new do
-        loop do
-          Ractor.yield(Ractor.receive)
-        end
-      end
-
+    def initialize(app:, context_pipe:, socket_pipe:)
+      @context_pipe = context_pipe
       @workers = []
       Zapp.config.parallelism.times do |i|
         @workers << Worker.new(
-          pipe_: pipe,
-          app_: app,
+          context_pipe: context_pipe,
+          socket_pipe: socket_pipe,
+          app: app,
           index: i
         )
       end
     end
 
-    # Sends data through the pipe to one of our workers,
-    # sends a tuple of [context, shutdown], if shutdown is true it breaks from its processing loop
-    # otherwise the worker processes the HTTP context
-    def process(context:, shutdown: false)
-      pipe.send([context.dup, shutdown], move: true)
+    # Sends a socket to one of our workers
+    def process(context:)
+      context_pipe.send(context)
     end
 
     # Finishes processing of all requests and shuts down workers
     def drain
-      Zapp.config.parallelism.times { process(context: nil, shutdown: true) }
+      Zapp.config.parallelism.times { process(context: nil) }
       workers.map(&:terminate)
     rescue Ractor::RemoteError
       # Ignored

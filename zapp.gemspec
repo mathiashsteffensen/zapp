@@ -31,6 +31,8 @@ Gem::Specification.new do |spec|
   # Use Puma's C-based HttpParser, it's fast as hell
   spec.add_dependency("puma", "~> 5.5.2")
 
+  spec.add_dependency("webrick")
+
   # Concurrent ruby for managing Thread pools
   spec.add_dependency("concurrent-ruby", "~> 1.1.9")
 
