@@ -6,16 +6,8 @@ module Zapp
     attr_reader(:worker_pool, :socket_pipe_receiver)
 
     def initialize
-      @socket_pipe = Ractor.new do
-        loop do
-          Ractor.yield(Ractor.receive_if { |msg| msg.is_a?(TCPSocket) })
-        end
-      end
-      @context_pipe = Ractor.new do
-        loop do
-          Ractor.yield(Ractor.receive_if { |msg| msg.is_a?(Zapp::HTTPContext::Context) })
-        end
-      end
+      @socket_pipe = Zapp::Pipe.new
+      @context_pipe = Zapp::Pipe.new
 
       @socket_pipe_receiver = Zapp::SocketPipe::Receiver.new(pipe: @socket_pipe)
 
@@ -43,7 +35,7 @@ module Zapp
     end
 
     def shutdown(err = nil)
-      Zapp::Logger.info("Received signal #{err}") unless err.nil?
+      Zapp::Logger.info("Received signal #{err.class.name}") unless err.nil?
       Zapp::Logger.info("Gracefully shutting down workers, allowing request processing to finish")
 
       socket_pipe_receiver.drain
@@ -55,7 +47,17 @@ module Zapp
     private
 
     def log_start
-      Zapp::Logger.info("Zap version: #{Zapp::VERSION}")
+      Zapp::Logger.info("
+        ⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡
+        ⚡  ███████╗ █████╗ ██████╗ ██████╗   ⚡
+        ⚡  ╚══███╔╝██╔══██╗██╔══██╗██╔══██╗  ⚡
+        ⚡    ███╔╝ ███████║██████╔╝██████╔╝  ⚡
+        ⚡   ███╔╝  ██╔══██║██╔═══╝ ██╔═══╝   ⚡
+        ⚡  ███████╗██║  ██║██║     ██║       ⚡
+        ⚡  ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝       ⚡
+        ⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡
+")
+      Zapp::Logger.info("Zapp version: #{Zapp::VERSION}")
       Zapp::Logger.info("Environment: #{Zapp.config.mode}")
       Zapp::Logger.info("Serving: #{Zapp.config.env[Rack::RACK_URL_SCHEME]}://#{Zapp.config.host}:#{Zapp.config.port}")
       Zapp::Logger.info("Parallel workers: #{Zapp.config.parallelism}")

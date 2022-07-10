@@ -5,6 +5,10 @@ module Zapp
   class WorkerPool
     attr_reader(:context_pipe, :workers, :parallelism)
 
+    SIGNALS = {
+      EXIT: :exit
+    }.freeze
+
     def initialize(app:, context_pipe:, socket_pipe:)
       @context_pipe = context_pipe
       @workers = []
@@ -25,10 +29,10 @@ module Zapp
 
     # Finishes processing of all requests and shuts down workers
     def drain
-      Zapp.config.parallelism.times { process(context: nil) }
+      Zapp.config.parallelism.times { process(context: SIGNALS[:EXIT]) }
       workers.map(&:terminate)
-    rescue Ractor::RemoteError
-      # Ignored
+    rescue Ractor::ClosedError
+      # Ractor has already exited
     end
   end
 end

@@ -9,10 +9,14 @@ module Zapp
     module Base
       attr_writer(:level, :prefix)
 
-      LEVELS = { DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3 }.freeze
+      LEVELS = { TRACE: 0, DEBUG: 1, INFO: 2, WARN: 3, ERROR: 4 }.freeze
 
       FROZEN_ENV = ENV.map { |k, v| [k.freeze, v.freeze] }
                       .to_h.freeze
+
+      def trace(msg)
+        log("TRACE", msg)
+      end
 
       def debug(msg)
         log("DEBUG", msg)
@@ -66,3 +70,5 @@ module Zapp
     end
   end
 end
+
+Zapp::Logger.prefix = "Zapp"

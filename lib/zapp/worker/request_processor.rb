@@ -14,9 +14,13 @@ module Zapp
       end
 
       def loop
-        config.threads_per_worker.times do
-          while (context = context_pipe.take)
-            break unless context
+        while (context = context_pipe.take)
+          if context == Zapp::WorkerPool::SIGNALS[:EXIT]
+            logger.trace("Received exit signal, shutting down")
+            thread_pool.shutdown
+            break
+          end
+
 
             process = lambda {
               process(context: context)
@@ -31,7 +35,7 @@ module Zapp
             # We send sockets that the client hasn't closed yet,
             # back to the main ractor for HTTP request parsing again
             socket_pipe_sender.push(context.socket) unless context.client_closed?
-          end
+
         end
       end
 
@@ -90,6 +94,14 @@ module Zapp
         stream.close if stream.respond_to?(:close)
 
         response_body
+      end
+
+      def thread_pool
+        @thread_pool ||= Concurrent::ThreadPoolExecutor.new(
+          min_threads: config.threads_per_worker,
+          max_threads: config.threads_per_worker,
+          max_queue: 1000,
+        )
       end
 
       def logger

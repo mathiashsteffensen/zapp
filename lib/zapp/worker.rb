@@ -12,7 +12,6 @@ module Zapp
           socket_pipe,
           app,
           Zapp.config.dup,
-          index,
           name: name(index)
         ) do |context_pipe, socket_pipe, app, config|
           processor = Zapp::Worker::RequestProcessor.new(
@@ -33,7 +32,6 @@ module Zapp
     end
 
     def terminate
-      Zapp::Logger.debug("Terminating worker #{name}")
       take
     end
   end
