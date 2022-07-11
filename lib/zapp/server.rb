@@ -6,6 +6,9 @@ module Zapp
     attr_reader(:worker_pool, :socket_pipe_receiver)
 
     def initialize
+      # Ensure config.ru file is loaded just once by main ractor
+      Zapp.config.app
+
       @socket_pipe = Zapp::Pipe.new
       @context_pipe = Zapp::Pipe.new
 
