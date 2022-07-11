@@ -18,12 +18,10 @@ Gem::Specification.new do |spec|
   spec.metadata["changelog_uri"] = "https://github.com/mathiashsteffensen/zapp/blob/master/CHANGELOG.md"
 
   # Which files should be added to the gem when it is released.
-  spec.files =
-    Dir.chdir(File.expand_path(__dir__)) do
-      `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:spec|example)/}) }
-    end
+  spec.files = Dir.glob("{lib,bin}/**/*")
   spec.bindir        = "bin"
   spec.require_paths = ["lib"]
+  spec.executables = ["zapp"]
 
   # This is of course a web server for Rack applications
   spec.add_dependency("rack", "~> 2.2.3")
