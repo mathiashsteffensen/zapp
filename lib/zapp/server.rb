@@ -11,7 +11,7 @@ module Zapp
 
       @socket_pipe_receiver = Zapp::SocketPipe::Receiver.new(pipe: @socket_pipe)
 
-      @worker_pool = Zapp::WorkerPool.new(app: Zapp.config.app, socket_pipe: @socket_pipe, context_pipe: @context_pipe)
+      @worker_pool = Zapp::WorkerPool.new(socket_pipe: @socket_pipe, context_pipe: @context_pipe)
     end
 
     def run
@@ -38,16 +38,17 @@ module Zapp
       Zapp::Logger.info("Received signal #{err.class.name}") unless err.nil?
       Zapp::Logger.info("Gracefully shutting down workers, allowing request processing to finish")
 
-      socket_pipe_receiver.drain
       worker_pool.drain
 
       Zapp::Logger.info("Done. See you next time!")
+      Zapp::Logger.flush
     end
 
     private
 
     def log_start
-      Zapp::Logger.info("
+      Zapp::Logger.info(
+        "
         ⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡
         ⚡  ███████╗ █████╗ ██████╗ ██████╗   ⚡
         ⚡  ╚══███╔╝██╔══██╗██╔══██╗██╔══██╗  ⚡
@@ -56,7 +57,8 @@ module Zapp
         ⚡  ███████╗██║  ██║██║     ██║       ⚡
         ⚡  ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝       ⚡
         ⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡⚡
-")
+"
+      )
       Zapp::Logger.info("Zapp version: #{Zapp::VERSION}")
       Zapp::Logger.info("Environment: #{Zapp.config.mode}")
       Zapp::Logger.info("Serving: #{Zapp.config.env[Rack::RACK_URL_SCHEME]}://#{Zapp.config.host}:#{Zapp.config.port}")

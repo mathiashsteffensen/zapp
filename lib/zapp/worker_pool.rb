@@ -9,14 +9,13 @@ module Zapp
       EXIT: :exit
     }.freeze
 
-    def initialize(app:, context_pipe:, socket_pipe:)
+    def initialize(context_pipe:, socket_pipe:)
       @context_pipe = context_pipe
       @workers = []
       Zapp.config.parallelism.times do |i|
         @workers << Worker.new(
           context_pipe: context_pipe,
           socket_pipe: socket_pipe,
-          app: app,
           index: i
         )
       end
@@ -30,9 +29,11 @@ module Zapp
     # Finishes processing of all requests and shuts down workers
     def drain
       Zapp.config.parallelism.times { process(context: SIGNALS[:EXIT]) }
-      workers.map(&:terminate)
-    rescue Ractor::ClosedError
-      # Ractor has already exited
+      workers.map do |w|
+        w.terminate
+      rescue Ractor::ClosedError
+        # Ractor has already exited
+      end
     end
   end
 end

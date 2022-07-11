@@ -5,13 +5,16 @@ AllCops:
   Exclude:
     - examples/**/*
 
+Gemspec/RequireMFA:
+  Enabled: false
+
 Style/DocumentationMethod:
   Enabled: false
 Style/MissingElse:
   Enabled: false
 Style/StringLiterals:
   EnforcedStyle: double_quotes
-Style/InlineComments:
+Style/InlineComment:
   Enabled: false
 Style/Copyright:
   Enabled: false

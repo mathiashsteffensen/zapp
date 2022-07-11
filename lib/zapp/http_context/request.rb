@@ -9,7 +9,7 @@ module Zapp
       attr_reader(:raw, :data, :body)
 
       # Request parsing is done threaded, but not in separate Ractors.
-      # So we allocate an HTTP parser per thread and assigns it to this hash key on Thread.current
+      # So we allocate an HTTP parser per thread and assign it to this hash key in Thread.current
       PARSER_THREAD_HASH_KEY = "PUMA_PARSER_INSTANCE"
 
       def initialize(socket:)
@@ -19,7 +19,7 @@ module Zapp
 
         parser.execute(data, raw, 0)
 
-        @body = Zapp::InputStream.new(string: "parser.body")
+        @body = Zapp::InputStream.new(string: parser.body)
 
         parser.reset
       end

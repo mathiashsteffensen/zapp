@@ -11,11 +11,14 @@ require("rack")
 module Zapp
   class ZappError < StandardError; end
 
+  # The hash key in Ractor.current that stores the global Zapp::Configuration instance
+  RACTOR_CONFIG_KEY = "ZAPP_CONFIG"
+
   class << self
     def config(reset: false)
-      @config = Zapp::Configuration.new if reset
+      Ractor.current[RACTOR_CONFIG_KEY] = Zapp::Configuration.new if reset
 
-      @config ||= Zapp::Configuration.new
+      Ractor.current[RACTOR_CONFIG_KEY] ||= Zapp::Configuration.new
     end
 
     def configure

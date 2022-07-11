@@ -19,14 +19,6 @@ module Zapp
       def take
         Ractor.select(pipe, raw_tcp_pipe)[1]
       end
-
-      def drain
-        Thread.new do
-          loop do
-            take
-          end
-        end
-      end
     end
   end
 end

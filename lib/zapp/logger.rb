@@ -1,64 +1,10 @@
 # frozen_string_literal: true
 
+require_relative("logger/base")
+
 module Zapp
-  # The default logger for zap
+  # The default logger for Zapp
   class Logger
-    # Base contains all the logging functionality and is included both as class and instance methods of Zap::Logger
-    # This allows logging without creating new instances,
-    # while allowing Ractors to create their own instances for thread safety
-    module Base
-      attr_writer(:level, :prefix)
-
-      LEVELS = { TRACE: 0, DEBUG: 1, INFO: 2, WARN: 3, ERROR: 4 }.freeze
-
-      FROZEN_ENV = ENV.map { |k, v| [k.freeze, v.freeze] }
-                      .to_h.freeze
-
-      def trace(msg)
-        log("TRACE", msg)
-      end
-
-      def debug(msg)
-        log("DEBUG", msg)
-      end
-
-      def info(msg)
-        log("INFO", msg)
-      end
-
-      def warn(msg)
-        log("WARN", msg)
-      end
-
-      def error(msg)
-        log("ERROR", msg)
-      end
-
-      def level
-        @level ||= begin
-          log_level = FROZEN_ENV["LOG_LEVEL"]
-
-          if log_level == "" || log_level.nil?
-            LEVELS[:DEBUG]
-          else
-            resolved_level = LEVELS[log_level.upcase.to_sym]
-
-            if resolved_level.nil?
-              raise(
-                Zapp::ZappError,
-                "Invalid log level '#{log_level.upcase}', must be one of [#{LEVELS.keys.join(', ')}]"
-              )
-            end
-
-            resolved_level
-          end
-        end
-      end
-
-      def log(current_level, msg, **_tags)
-        puts("--- #{@prefix} [#{current_level}] #{msg}") if level <= LEVELS[current_level.to_sym]
-      end
-    end
     include(Zapp::Logger::Base)
 
     def initialize
@@ -66,9 +12,26 @@ module Zapp
     end
 
     class << self
-      include(Zapp::Logger::Base)
+      # The hash key in Ractor.current that stores the global Zapp::Logger instance
+      GLOBAL_INSTANCE_KEY = "ZAPP_LOGGER_INSTANCE"
+
+      def instance
+        Ractor.current[GLOBAL_INSTANCE_KEY] ||= new
+      end
+
+      private
+
+      def method_missing(symbol, *args)
+        if respond_to_missing?(symbol)
+          instance.public_send(symbol, *args)
+        else
+          super
+        end
+      end
+
+      def respond_to_missing?(symbol, include_private = false)
+        instance.respond_to?(symbol) || super(symbol, include_private)
+      end
     end
   end
 end
-
-Zapp::Logger.prefix = "Zapp"

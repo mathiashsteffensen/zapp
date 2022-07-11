@@ -12,6 +12,7 @@ module Zapp
       :parallelism,
       :threads_per_worker,
       :logger_class,
+      :logger_out_io,
       :log_requests,
       :log_uncaught_errors,
       :host,
@@ -33,6 +34,7 @@ module Zapp
 
       # Default logging behavior
       logger_class: Zapp::Logger,
+      logger_out_io: $stdout,
       log_requests: true,
       log_uncaught_errors: true,
 
@@ -72,7 +74,7 @@ module Zapp
       @app = new unless new.nil?
 
       @app ||= begin
-        raise(Zapp::ZapError, "Missing rackup file '#{rackup_file}'") unless File.exist?(rackup_file)
+        raise(Zapp::ZappError, "Missing rackup file '#{rackup_file}'") unless File.exist?(rackup_file)
 
         rack_app, = rack_builder.parse_file(rackup_file)
 
@@ -96,6 +98,12 @@ module Zapp
       return @logger_class if new.nil?
 
       @logger_class = new
+    end
+
+    def logger_out_io(new = nil)
+      return @logger_out_io if new.nil?
+
+      @logger_out_io = new
     end
 
     def log_requests(new = nil)
