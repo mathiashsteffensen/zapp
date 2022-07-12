@@ -15,6 +15,8 @@ module Zapp
         ) do |context_pipe, socket_pipe, config|
           Ractor.current[Zapp::RACTOR_CONFIG_KEY] = config
 
+          Zapp.config.app.prepare if Zapp.config.app.respond_to?(:prepare)
+
           processor = Zapp::Worker::RequestProcessor.new(
             socket_pipe: socket_pipe,
             context_pipe: context_pipe

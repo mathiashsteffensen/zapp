@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zapp (0.2.1)
+    zapp (0.2.4)
       concurrent-ruby (~> 1.1.9)
       puma (~> 5.5.2)
       rack (~> 2.2.3)

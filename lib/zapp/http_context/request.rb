@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require("webrick")
-
 module Zapp
   module HTTPContext
     # Represents an HTTP Request to be processed by a worker

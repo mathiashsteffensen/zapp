@@ -2,9 +2,9 @@
 
 module Zapp
   # Light wrapper around a Ractor for piping messages CSP style
-  module Pipe
+  class Pipe < Ractor
     def self.new
-      Ractor.new do
+      super do
         loop do
           Ractor.yield(Ractor.receive)
         end
