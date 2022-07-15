@@ -13,11 +13,16 @@ module Zapp
 
       def loop
         while (context = context_pipe.take)
-          if context == Zapp::WorkerPool::SIGNALS[:EXIT]
-            Zapp::Logger.trace("Received exit signal, shutting down")
-            shutdown
-            break
+          if context.is_a?(Symbol)
+            if context == Zapp::WorkerPool::SIGNALS[:EXIT]
+              Zapp::Logger.trace("Received exit signal, shutting down")
+              shutdown
+              break
+            else
+              next
+            end
           end
+          
 
           process = lambda {
             process(context: context)

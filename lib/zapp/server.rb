@@ -9,8 +9,8 @@ module Zapp
       # Ensure config.ru file is loaded just once by main ractor
       Zapp.config.app
 
-      @socket_pipe = Zapp::Pipe.new
-      @context_pipe = Zapp::Pipe.new
+      @socket_pipe = Zapp::Pipe.for(TCPSocket)
+      @context_pipe = Zapp::Pipe.for(Zapp::HTTPContext::Context, Symbol)
 
       @socket_pipe_receiver = Zapp::SocketPipe::Receiver.new(pipe: @socket_pipe)
 
