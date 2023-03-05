@@ -12,6 +12,8 @@ class MockSocket
     @request_content
   end
 
+  def readpartial(...) = recv(...)
+
   def write(response_content)
     @response = response_content
   end

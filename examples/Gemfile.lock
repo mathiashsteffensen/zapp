@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    zapp (0.2.4)
+    zapp (0.2.6)
       concurrent-ruby (~> 1.1.9)
       puma (~> 5.5.2)
       rack (~> 2.2.3)
@@ -17,22 +17,22 @@ GEM
     nio4r (2.5.8)
     puma (5.5.2)
       nio4r (~> 2.0)
-    rack (2.2.4)
+    rack (2.2.6.3)
     rake (13.0.6)
-    rspec (3.11.0)
-      rspec-core (~> 3.11.0)
-      rspec-expectations (~> 3.11.0)
-      rspec-mocks (~> 3.11.0)
-    rspec-core (3.11.0)
-      rspec-support (~> 3.11.0)
-    rspec-expectations (3.11.0)
+    rspec (3.12.0)
+      rspec-core (~> 3.12.0)
+      rspec-expectations (~> 3.12.0)
+      rspec-mocks (~> 3.12.0)
+    rspec-core (3.12.1)
+      rspec-support (~> 3.12.0)
+    rspec-expectations (3.12.2)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.11.0)
-    rspec-mocks (3.11.1)
+      rspec-support (~> 3.12.0)
+    rspec-mocks (3.12.3)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.11.0)
-    rspec-support (3.11.0)
-    webrick (1.7.0)
+      rspec-support (~> 3.12.0)
+    rspec-support (3.12.0)
+    webrick (1.8.1)
 
 PLATFORMS
   x86_64-linux
@@ -41,4 +41,4 @@ DEPENDENCIES
   zapp (~> 0.2.4)!
 
 BUNDLED WITH
-   2.2.3
+   2.3.18

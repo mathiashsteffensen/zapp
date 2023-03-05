@@ -11,8 +11,10 @@ module Zapp
 
       def initialize(socket:, logger: Zapp::Logger)
         @socket = socket
-        @req = Zapp::HTTPContext::Request.new(socket: socket)
         @res = Zapp::HTTPContext::Response.new(socket: socket)
+        @req = Zapp::HTTPContext::Request.new(socket: socket)
+
+        req.parse!
       rescue Puma::HttpParserError => e
         res.write(data: "Invalid HTTP request", status: 400, headers: {})
         logger.warn("Puma parser error: #{e}")

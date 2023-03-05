@@ -10,4 +10,8 @@ class MockApp
 
     [200, {}, ["This is a body"]]
   end
+
+  def called?
+    calls.size.positive?
+  end
 end

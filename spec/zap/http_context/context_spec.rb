@@ -7,28 +7,6 @@ RSpec.describe(Zapp::HTTPContext::Context) do
 
   let(:socket) { MockSocket.new(request_content: "GET /admin/users?search=%27%%27 HTTP/1.1\r\n\r\n") }
 
-  describe("#req") do
-    subject(:request) { context.req }
-
-    describe("#parsed?") do
-      subject { request.parsed? }
-
-      context("when not parsed") do
-        it { is_expected.to(eq(false)) }
-      end
-
-      context("when parsed") do
-        before do
-          request.parse!
-        end
-
-        it {
-          is_expected.to(eq(true))
-        }
-      end
-    end
-  end
-
   describe("#res") do
     subject(:response) { context.res }
 

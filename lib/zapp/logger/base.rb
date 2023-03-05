@@ -85,13 +85,12 @@ module Zapp
       end
 
       # We really just use this as a queue
-      # TODO: There's probably a smarter way of doing this with less overhead,
-      # TODO: or maybe we should just actually write logs multi-threaded
+      # TODO: There's probably a smarter way of doing this with less overhead
       def writing_thread_pool
         @writing_thread_pool ||= Concurrent::ThreadPoolExecutor.new(
           min_threads: 1,
-          max_threads: 1,
-          max_queue: 100
+          max_threads: 5,
+          max_queue: 10_000
         )
       end
 

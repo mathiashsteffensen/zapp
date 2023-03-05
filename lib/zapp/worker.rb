@@ -13,7 +13,7 @@ module Zapp
           Zapp.config.dup,
           name: name(index)
         ) do |context_pipe, socket_pipe, config|
-          Ractor.current[Zapp::RACTOR_CONFIG_KEY] = config
+          Zapp.__set_config(config)
 
           Zapp.config.app.prepare if Zapp.config.app.respond_to?(:prepare)
 

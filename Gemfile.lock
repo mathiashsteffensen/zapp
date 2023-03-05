@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zapp (0.2.4)
+    zapp (0.2.6)
       concurrent-ruby (~> 1.1.9)
       puma (~> 5.5.2)
       rack (~> 2.2.3)
@@ -54,7 +54,7 @@ GEM
       method_source (~> 1.0)
     puma (5.5.2)
       nio4r (~> 2.0)
-    rack (2.2.4)
+    rack (2.2.6.2)
     rainbow (3.0.0)
     rake (13.0.6)
     rb-fsevent (0.11.0)
@@ -109,4 +109,4 @@ DEPENDENCIES
   zapp!
 
 BUNDLED WITH
-   2.3.0.dev
+   2.3.3

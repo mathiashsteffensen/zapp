@@ -7,7 +7,7 @@ class DummyRequest
 end
 
 RSpec.describe(Zapp::WorkerPool) do
-  subject(:worker_pool) { Zapp::WorkerPool.new(app: app) }
+  subject(:worker_pool) { Zapp::WorkerPool.new(socket_pipe: Zapp::Pipe.new, context_pipe: Zapp::Pipe.new) }
 
   let(:app) { MockApp.new }
 
@@ -15,6 +15,10 @@ RSpec.describe(Zapp::WorkerPool) do
     subject(:process) do
       worker_pool.process(context: context)
       worker_pool.drain
+    end
+
+    before do
+      Zapp.config.app(app)
     end
 
     let(:context) { Zapp::HTTPContext::Context.new(socket: socket) }
